@@ -38,11 +38,11 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/jason/j/fetch-finance-data-django/yfinance"
+VIRTUAL_ENV="C:\Users\jason\j\fetch-finance-data-django\finance-env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
-PATH="$VIRTUAL_ENV/bin:$PATH"
+PATH="$VIRTUAL_ENV/Scripts:$PATH"
 export PATH
 
 # unset PYTHONHOME if set
@@ -55,9 +55,9 @@ fi
 
 if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT:-}" ] ; then
     _OLD_VIRTUAL_PS1="${PS1:-}"
-    PS1="(yfinance) ${PS1:-}"
+    PS1="(finance-env) ${PS1:-}"
     export PS1
-    VIRTUAL_ENV_PROMPT="(yfinance) "
+    VIRTUAL_ENV_PROMPT="(finance-env) "
     export VIRTUAL_ENV_PROMPT
 fi
 

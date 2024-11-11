@@ -1,4 +1,4 @@
-#!/Users/jason/j/fetch-finance-data-django/yfinance/bin/python3.11
+#!C:\Users\jason\j\fetch-finance-data-django\finance-env\Scripts\python.exe
 
 import datetime
 import os
