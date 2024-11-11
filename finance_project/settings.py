@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'fetch_yfinance',
-    'stock_display',
     'my_api',
 ]
 
@@ -140,12 +139,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True  # Only use this for development!
 
-# For production, specify allowed origins:
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:3000",  # React default port
-#     "http://127.0.0.1:3000",
-#     "https://yourdomain.com",
-# ]
 
 # Additional CORS settings if needed
 CORS_ALLOW_METHODS = [
