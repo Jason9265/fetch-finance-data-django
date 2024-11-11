@@ -73,15 +73,21 @@ WSGI_APPLICATION = 'finance_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql.connector.django',
-        'NAME': 'finance_db',
-        'USER': 'root',
-        'PASSWORD': 'rootroot',
-        'HOST': 'localhost',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'jason97965_practice',
+        'USER': 'jason97965_admin',
+        'PASSWORD': 'admin',
+        'HOST': 'jason97965.helioho.st',
         'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+            'charset': 'utf8mb4',
+            'ssl': {
+                'mode': 'DISABLED'
+            }
+        }
     }
 }
 
