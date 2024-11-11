@@ -10,7 +10,7 @@ class Command(BaseCommand):
             '--period',
             type=str,
             default='1mo',
-            help='Data period (1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd,max)'
+            help='Data period (1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd)'
         )
         parser.add_argument(
             '--interval',
