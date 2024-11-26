@@ -1,7 +1,5 @@
 import yfinance as yf
-from datetime import datetime, timedelta
 from decimal import Decimal
-from django.utils import timezone
 from .models import StockInfo, StockPrice
 
 def update_stock_info(symbol):

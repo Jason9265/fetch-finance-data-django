@@ -9,13 +9,13 @@ class Command(BaseCommand):
         parser.add_argument(
             '--period',
             type=str,
-            default='1mo',
+            default='1y',
             help='Data period (1d,5d,1mo,3mo,6mo,1y,2y,5y,10y,ytd)'
         )
         parser.add_argument(
             '--interval',
             type=str,
-            default='1d',
+            default='30m',
             help='Data interval (1m,2m,5m,15m,30m,60m,90m,1h,1d,5d,1wk,1mo,3mo)'
         )
         parser.add_argument(
