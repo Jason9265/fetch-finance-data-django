@@ -6,6 +6,7 @@ from django.utils.dateparse import parse_date
 from .services import StockDataService
 from .serializers import StockInfoSerializer, StockPriceSerializer
 from datetime import datetime, timedelta
+from .models import StockInfo
 
 class StockViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = StockInfoSerializer
@@ -45,7 +46,6 @@ class StockViewSet(viewsets.ReadOnlyModelViewSet):
         symbol = request.query_params.get('symbol')
         period = int(request.query_params.get('period', 30))  # Default to 30 days
 
-        # Get the start and end dates from query parameters
         start_date = request.query_params.get('start_date')
         end_date = request.query_params.get('end_date')
 
@@ -54,7 +54,6 @@ class StockViewSet(viewsets.ReadOnlyModelViewSet):
             end_date = datetime.now()
             start_date = end_date - timedelta(days=period)
 
-        # Parse the dates
         start_date = parse_date(start_date)
         end_date = parse_date(end_date)
 
@@ -81,29 +80,26 @@ class StockViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='stock_list')
     def stock_list(self, request):
-        # Get all stock information from the database
         stocks = StockDataService.get_stock_list()
         
-        # Format the response data
         formatted_stocks = [
-            {
-                'symbol': stock.symbol,
-                'short_name': stock.short_name,
-                'long_name': stock.long_name,
-                'sector': stock.sector,
-                'industry': stock.industry,
-                'market_cap': stock.market_cap,
-                'currency': stock.currency,
-                'exchange': stock.exchange,
-                'quote_type': stock.quote_type,
-                'last_updated': stock.last_updated,
-            }
+            [
+                stock.symbol,
+                stock.short_name,
+                stock.long_name,
+                stock.sector,
+                stock.industry,
+                stock.market_cap,
+                stock.currency,
+                stock.exchange,
+                stock.quote_type,
+                stock.last_updated,
+            ]
             for stock in stocks
         ]
-
         return Response(formatted_stocks)
 
-    @action(detail=False, methods=['get'], url_path='fetchStockDetail')
+    @action(detail=False, methods=['get'], url_path='stock-detail')
     def fetch_stock_detail(self, request):
         symbol = request.query_params.get('symbol')
         
