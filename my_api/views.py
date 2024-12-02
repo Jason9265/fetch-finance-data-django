@@ -6,7 +6,6 @@ from django.utils.dateparse import parse_date
 from .services import StockDataService
 from .serializers import StockInfoSerializer, StockPriceSerializer
 from datetime import datetime, timedelta
-from .models import StockInfo
 
 class StockViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = StockInfoSerializer
@@ -51,28 +50,34 @@ class StockViewSet(viewsets.ReadOnlyModelViewSet):
 
         # If start_date or end_date is not provided, calculate them based on the period
         if not start_date or not end_date:
-            end_date = datetime.now()
-            start_date = end_date - timedelta(days=period)
+            end_date = datetime.now().date()  # Get only the date part
+            start_date = end_date - timedelta(days=period)  # Calculate start date
 
-        start_date = parse_date(start_date)
-        end_date = parse_date(end_date)
+        # Ensure start_date and end_date are strings before parsing
+        if isinstance(start_date, str) and isinstance(end_date, str):
+            start_date = parse_date(start_date)
+            end_date = parse_date(end_date)
+        else:
+            # If they are not strings, we can convert the calculated dates to strings
+            start_date = start_date.strftime('%Y-%m-%d') if isinstance(start_date, datetime) else start_date
+            end_date = end_date.strftime('%Y-%m-%d') if isinstance(end_date, datetime) else end_date
 
         # Get the price history for the specified symbol and date range
         prices = StockDataService.get_stock_price_history(symbol, start_date, end_date)
 
         # Format the response data with trend indicator
         formatted_prices = [
-            {
-                'id': price.id,
-                'datetime': price.date,
-                'open': price.open,
-                'high': price.high,
-                'low': price.low,
-                'close': price.close,
-                'volume': price.volume,
-                'symbol': price.symbol_id,
-                'trend_indicator': 1 if price.close > price.open else -1,  # Trend indicator
-            }
+            [
+                price.id,
+                price.date,
+                price.open,
+                price.high,
+                price.low,
+                price.close,
+                price.volume,
+                price.symbol_id,
+                1 if price.close > price.open else -1,  # Trend indicator
+            ]
             for price in prices
         ]
 
@@ -111,6 +116,17 @@ class StockViewSet(viewsets.ReadOnlyModelViewSet):
         if stock_info is None:
             return Response({"error": "Stock not found."}, status=404)
 
-        # Serialize the stock information
-        serializer = StockInfoSerializer(stock_info)
-        return Response(serializer.data) 
+        stock_info=[
+            stock_info.symbol,
+            stock_info.short_name,
+            stock_info.long_name,
+            stock_info.sector,
+            stock_info.industry,
+            stock_info.market_cap,
+            stock_info.currency,
+            stock_info.exchange,
+            stock_info.quote_type,
+            stock_info.last_updated,
+        ]
+        print(stock_info)
+        return Response(stock_info) 
