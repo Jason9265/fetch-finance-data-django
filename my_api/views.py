@@ -101,4 +101,20 @@ class StockViewSet(viewsets.ReadOnlyModelViewSet):
             for stock in stocks
         ]
 
-        return Response(formatted_stocks) 
+        return Response(formatted_stocks)
+
+    @action(detail=False, methods=['get'], url_path='fetchStockDetail')
+    def fetch_stock_detail(self, request):
+        symbol = request.query_params.get('symbol')
+        
+        if not symbol:
+            return Response({"error": "Symbol parameter is required."}, status=400)
+
+        stock_info = StockDataService.get_stock_details(symbol)
+
+        if stock_info is None:
+            return Response({"error": "Stock not found."}, status=404)
+
+        # Serialize the stock information
+        serializer = StockInfoSerializer(stock_info)
+        return Response(serializer.data) 
